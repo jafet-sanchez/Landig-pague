@@ -96,3 +96,5 @@ $RECYCLE.BIN/
 
 # Netlify
 .netlify
+
+.vercel
