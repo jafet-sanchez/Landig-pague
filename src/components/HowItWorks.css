@@ -1,0 +1,193 @@
+.how-it-works {
+  position: relative;
+  background: var(--bg-dark);
+  padding: var(--spacing-xl) 0;
+  overflow: hidden;
+}
+
+/* Contenedor de pasos */
+.steps-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: var(--spacing-lg) 0;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+.step-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Tarjeta de paso */
+.step-card {
+  position: relative;
+  width: 200px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-card:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+/* Número del paso */
+.step-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--bg-dark);
+}
+
+/* Ícono del paso */
+.step-icon {
+  font-size: 3rem;
+  margin: 1rem 0;
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+}
+
+/* Título del paso */
+.step-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+/* Descripción del paso */
+.step-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Partículas flotantes */
+.step-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  top: 20%;
+  right: 10%;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+/* Flecha conectora */
+.step-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-arrow svg {
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+}
+
+/* Línea de tiempo */
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--neon-purple),
+    var(--neon-cyan),
+    var(--neon-green),
+    var(--neon-purple)
+  );
+  background-size: 200% 100%;
+  transform-origin: left;
+  z-index: 1;
+  animation: gradient-flow 5s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* CTA al final */
+.how-it-works-cta {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  padding: 3rem 2rem;
+  background: rgba(21, 21, 32, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 16px;
+}
+
+.how-it-works-cta h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .steps-container {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .step-wrapper {
+    flex-direction: column;
+  }
+
+  .step-arrow {
+    transform: rotate(90deg);
+  }
+
+  .timeline-line {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .how-it-works-cta h3 {
+    font-size: 1.5rem;
+  }
+
+  /* Reducir partículas flotantes en móvil */
+  .step-particle {
+    opacity: 0.3;
+  }
+
+  /* Simplificar flechas en móvil */
+  .step-arrow svg {
+    filter: none;
+  }
+}
