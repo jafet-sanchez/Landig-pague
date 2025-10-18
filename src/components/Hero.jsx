@@ -4,7 +4,7 @@ import './Hero.css';
 
 const Hero = () => {
   const [text, setText] = useState('');
-  const fullText = 'Transformamos empresas con inteligencia automatizada';
+  const fullText = 'Transformamos empresas con inteligencia artificial';
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [counts, setCounts] = useState({ precision: 0, disponibilidad: 0, ahorro: 0 });

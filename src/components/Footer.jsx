@@ -155,7 +155,7 @@ const Footer = () => {
               transition={{ delay: 0.6 }}
             >
               <h3 className="footer-logo">
-                NeoTech <span className="logo-accent">AI</span>
+                NeoTech <span className="logo-accent">IA</span>
               </h3>
               <p className="footer-description">
                 Transformamos empresas con inteligencia automatizada. Soluciones
