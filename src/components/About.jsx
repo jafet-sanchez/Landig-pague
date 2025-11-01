@@ -60,7 +60,7 @@ const About = () => {
         >
           <h2 className="section-title">Sobre Nosotros</h2>
           <p className="section-subtitle">
-            Expertos en transformación digital y automatización inteligente
+            Expertos en transformaciónes digitales y automatización inteligentes
           </p>
         </motion.div>
 
