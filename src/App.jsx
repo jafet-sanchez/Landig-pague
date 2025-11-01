@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import './App.css';
 
-// Componentes
+// Componentes críticos (carga inmediata)
 import Preloader from './components/Preloader';
 import ScrollProgress from './components/ScrollProgress';
 import Hero from './components/Hero';
-import Services from './components/Services';
-import HowItWorks from './components/HowItWorks';
-import Results from './components/Results';
-import About from './components/About';
-import Footer from './components/Footer';
+
+// Componentes con lazy loading
+const Services = lazy(() => import('./components/Services'));
+const HowItWorks = lazy(() => import('./components/HowItWorks'));
+const Results = lazy(() => import('./components/Results'));
+const About = lazy(() => import('./components/About'));
+const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -41,11 +43,13 @@ function App() {
 
           <main>
             <Hero />
-            <Services />
-            <HowItWorks />
-            <Results />
-            <About />
-            <Footer />
+            <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+              <Services />
+              <HowItWorks />
+              <Results />
+              <About />
+              <Footer />
+            </Suspense>
           </main>
         </div>
       )}

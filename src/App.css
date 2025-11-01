@@ -137,16 +137,17 @@ section {
 
 /* Efecto glassmorphism */
 .glass-card {
-  background: rgba(21, 21, 32, 0.4);
+  background: rgba(21, 21, 32, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(168, 85, 247, 0.2);
   border-radius: 16px;
   padding: var(--spacing-md);
   transition: all 0.3s ease;
+  will-change: transform;
 }
 
 .glass-card:hover {
-  background: rgba(21, 21, 32, 0.6);
+  background: rgba(21, 21, 32, 0.8);
   border-color: rgba(168, 85, 247, 0.5);
   transform: translateY(-5px);
 }
@@ -186,5 +187,11 @@ section {
   .btn {
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+  }
+
+  /* Remover backdrop-filter en móvil para mejor performance */
+  .glass-card {
+    backdrop-filter: none;
+    background: rgba(21, 21, 32, 0.85);
   }
 }

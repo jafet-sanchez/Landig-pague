@@ -166,6 +166,18 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
+  animation: decoration-float 10s ease-in-out infinite;
+}
+
+@keyframes decoration-float {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1) translateY(-20px);
+    opacity: 0.5;
+  }
 }
 
 .decoration-1 {
@@ -182,6 +194,7 @@
   background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%);
   bottom: 10%;
   left: -15%;
+  animation-delay: 2s;
 }
 
 /* Responsive */
@@ -211,11 +224,12 @@
   /* Reducir animaciones en móvil para mejor performance */
   .decoration-circle {
     filter: blur(40px);
+    animation: none;
   }
 
   .decoration-1,
   .decoration-2 {
-    opacity: 0.3;
+    opacity: 0.2;
   }
 
   /* Reducir tamaño de decoraciones */
@@ -227,5 +241,13 @@
   .decoration-2 {
     width: 300px;
     height: 300px;
+  }
+
+  .icon-background {
+    animation: none;
+  }
+
+  .card-glow {
+    display: none;
   }
 }

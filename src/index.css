@@ -128,8 +128,18 @@ img {
 
 /* Optimizaciones para dispositivos móviles */
 @media (max-width: 768px) {
-  /* Reducir blur effects en móvil para mejor performance */
+  /* Reducir efectos pesados en móvil para mejor performance */
   * {
     will-change: auto !important;
+  }
+
+  /* Desactivar smooth scroll en móvil para mejor performance */
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Reducir complejidad de gradientes */
+  ::-webkit-scrollbar-thumb {
+    background: var(--neon-purple);
   }
 }

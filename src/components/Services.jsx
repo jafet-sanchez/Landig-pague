@@ -141,32 +141,10 @@ const Services = () => {
         </motion.div>
       </div>
 
-      {/* Decoración de fondo */}
+      {/* Decoración de fondo - optimizada con CSS */}
       <div className="services-decoration">
-        <motion.div
-          className="decoration-circle decoration-1"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-        <motion.div
-          className="decoration-circle decoration-2"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
+        <div className="decoration-circle decoration-1" />
+        <div className="decoration-circle decoration-2" />
       </div>
     </section>
   );

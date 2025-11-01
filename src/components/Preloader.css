@@ -25,6 +25,18 @@
   font-weight: 700;
   margin-bottom: 3rem;
   color: var(--text-primary);
+  animation: pulse-logo 2s ease-in-out infinite;
+}
+
+@keyframes pulse-logo {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
 }
 
 .logo-ai {

@@ -1,68 +1,72 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, memo } from 'react';
 import './Hero.css';
 
+// Memoizar partículas para evitar recrearlas en cada render
+const Particle = memo(({ particle }) => (
+  <motion.div
+    className="particle"
+    style={{
+      left: `${particle.x}%`,
+      top: `${particle.y}%`,
+      width: `${particle.size}px`,
+      height: `${particle.size}px`,
+    }}
+    animate={{
+      y: [0, -30, 0],
+      opacity: [0.2, 1, 0.2],
+    }}
+    transition={{
+      duration: particle.duration,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    }}
+  />
+));
+
+Particle.displayName = 'Particle';
+
 const Hero = () => {
-  const [text, setText] = useState('');
   const fullText = 'Transformamos empresas con inteligencia artificial';
-  const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [counts, setCounts] = useState({ precision: 0, disponibilidad: 0, ahorro: 0 });
+  const [isAnimated, setIsAnimated] = useState(false);
 
-  useEffect(() => {
-    if (index < fullText.length) {
-      setTimeout(() => {
-        setText(text + fullText[index]);
-        setIndex(index + 1);
-      }, 50);
-    }
-  }, [index]);
-
-  // Animación de contador para estadísticas
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (counts.precision < 98) {
-        setCounts(prev => ({
-          ...prev,
-          precision: Math.min(prev.precision + 2, 98)
-        }));
-      }
-      if (counts.disponibilidad < 24) {
-        setCounts(prev => ({
-          ...prev,
-          disponibilidad: Math.min(prev.disponibilidad + 1, 24)
-        }));
-      }
-      if (counts.ahorro < 40) {
-        setCounts(prev => ({
-          ...prev,
-          ahorro: Math.min(prev.ahorro + 1, 40)
-        }));
-      }
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [counts]);
-
-  // Detectar si es móvil
+  // Detectar si es móvil solo una vez al montar
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    let timeoutId;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
-  // Crear partículas flotantes (menos en móvil para mejor performance)
-  const particleCount = isMobile ? 20 : 50;
-  const particles = Array.from({ length: particleCount }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 4 + 1,
-    duration: Math.random() * 20 + 10,
-  }));
+  // Activar animaciones después de un breve delay
+  useEffect(() => {
+    const timer = setTimeout(() => setIsAnimated(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Crear partículas una sola vez (reducidas para mejor performance)
+  const particleCount = isMobile ? 8 : 15;
+  const particles = useMemo(() =>
+    Array.from({ length: particleCount }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 3 + 1,
+      duration: Math.random() * 15 + 10,
+    })), [particleCount]);
 
   const scrollToServices = () => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
@@ -70,28 +74,10 @@ const Hero = () => {
 
   return (
     <section className="hero" id="hero">
-      {/* Fondo de partículas */}
+      {/* Fondo de partículas optimizado */}
       <div className="particles-container">
         {particles.map((particle) => (
-          <motion.div
-            key={particle.id}
-            className="particle"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 1, 0.2],
-            }}
-            transition={{
-              duration: particle.duration,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
+          <Particle key={particle.id} particle={particle} />
         ))}
       </div>
 
@@ -101,36 +87,24 @@ const Hero = () => {
       <div className="container hero-content">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          animate={isAnimated ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
           className="hero-text"
         >
-          {/* Logo animado */}
-          <motion.div
-            className="hero-logo"
-            initial={{ opacity: 0, scale: 0.5, rotateY: -180 }}
-            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-            transition={{ duration: 1.2, type: "spring", stiffness: 100 }}
-          >
-            <motion.img
+          {/* Logo simplificado - animación vía CSS */}
+          <div className="hero-logo">
+            <img
               src="/logo-png.png"
               alt="Logo"
               className="logo-image"
-              animate={{
-                rotateY: [0, 360],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                rotateY: { duration: 8, repeat: Infinity, ease: "linear" },
-                scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-              }}
+              loading="eager"
             />
-          </motion.div>
+          </div>
 
           <motion.div
             className="hero-badge"
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={isAnimated ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.2 }}
           >
             <span className="badge-dot" />
@@ -138,15 +112,14 @@ const Hero = () => {
           </motion.div>
 
           <h1 className="hero-title">
-            <span className="gradient-text">{text}</span>
-            <span className="cursor">|</span>
+            <span className="gradient-text typing-text">{fullText}</span>
           </h1>
 
           <motion.p
             className="hero-subtitle"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
+            animate={isAnimated ? { opacity: 1 } : {}}
+            transition={{ delay: 0.4, duration: 0.6 }}
           >
             Asistentes virtuales, flujos inteligentes y automatización integral
             para tu negocio.
@@ -155,8 +128,8 @@ const Hero = () => {
           <motion.div
             className="hero-buttons"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2, duration: 0.6 }}
+            animate={isAnimated ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.6, duration: 0.5 }}
           >
             <button className="btn btn-primary" onClick={scrollToServices}>
               Descubre cómo funciona
@@ -167,37 +140,33 @@ const Hero = () => {
           <motion.div
             className="hero-stats"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.5, duration: 0.8 }}
+            animate={isAnimated ? { opacity: 1 } : {}}
+            transition={{ delay: 0.8, duration: 0.6 }}
           >
             <div className="stat-item">
-              <div className="stat-number">{counts.precision}%</div>
+              <div className="stat-number">98%</div>
               <div className="stat-label">Precisión IA</div>
             </div>
             <div className="stat-divider" />
             <div className="stat-item">
-              <div className="stat-number">{counts.disponibilidad}/7</div>
+              <div className="stat-number">24/7</div>
               <div className="stat-label">Disponibilidad</div>
             </div>
             <div className="stat-divider" />
             <div className="stat-item">
-              <div className="stat-number">{counts.ahorro}%</div>
+              <div className="stat-number">40%</div>
               <div className="stat-label">Ahorro de tiempo</div>
             </div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="scroll-indicator"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
+        {/* Scroll indicator con animación CSS */}
+        <div className="scroll-indicator">
           <div className="mouse">
             <div className="wheel" />
           </div>
           <span>Scroll</span>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
